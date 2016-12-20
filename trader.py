@@ -21,13 +21,14 @@ def _convert(num):
     return str(int(num/100))+'.'+('0'+str(num%100) if len(str(num%100))<2 else str(num%100))
 
 while True:
+    usd = convert(trader.get_account_balance()['usd_balance'])
     # get my order info
     if my_order_id is not None:
         my_order_info = trader.lookup_order(my_order_id)
         my_order_price = convert(my_order_info[0]['price'])
         if my_order_info[0]['status'] == '2':
             print('Order Complete! {}'.format(my_order_info))
-            #break
+            break
         elif my_order_info[0]['status'] == '1':
             print('Partially Full-filled! {}'.format(my_order_info))
 
