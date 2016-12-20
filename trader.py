@@ -7,8 +7,8 @@ import time
 apiKey = ''
 apiSecret = ''
 clientID=164993
-usd = 499998
-order_price_limit_100 = 78000
+usd = 500001
+order_price_limit_100 = 78500
 trader = Quadriga(apiKey, apiSecret, clientID)
 my_order_id = None
 my_order_price = None
@@ -34,8 +34,8 @@ while True:
     orders = trader.get_order_book(book='btc_usd', group=1)
     bids = orders['bids']
     asks = orders['asks']
-    bids = sorted(bids, key = lambda d: d[0], reverse=True)
-    asks = sorted(asks, key = lambda d: d[0])
+    bids = sorted(bids, key = lambda d: float(d[0]), reverse=True)
+    asks = sorted(asks, key = lambda d: float(d[0]))
     highest_ask_100 = convert(asks[0][0])
     highest_bid_100 = convert(bids[0][0])
     second_highest_bid_100 = convert(bids[1][0]) if len(bids)>=2 else None
@@ -57,7 +57,7 @@ while True:
 
         rv = trader.buy_order_limit(floor((usd/new_order_price_100)*1000000.0)/1000000.0, _convert(new_order_price_100), book='btc_usd')
         my_order_id = rv['id']
-        print('Order at {} = min(highest_bid + 0.01 = {} + 0.01, highest_ask = {}, price_limit = {})) '.format(
+        print('Order at {} = min(highest_bid + 0.01 = {} + 0.01, lowest_ask = {}, price_limit = {})) '.format(
             _convert(new_order_price_100), _convert(highest_bid_100),
             _convert(highest_ask_100), _convert(order_price_limit_100)))
         print(rv)
